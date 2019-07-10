@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+  <title>No More Cooking</title>
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+      height: 98%;
+    }
+    .page, :target ~ .default {
+    display: none;
+    }
+
+    .default, :target {
+        display: block;
+    }
+    #inputDish{
+    }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: lavender;
+    }
+
+    #floating-panel {
+      position: absolute;
+      top: 10px;
+      left: 25%;
+      z-index: 5;
+      background-color: #fff;
+      padding: 5px;
+      border: 1px solid #999;
+      text-align: center;
+      font-family: 'Roboto', 'sans-serif';
+      line-height: 30px;
+      padding-left: 10px;
+    }
+    header {
+      background-size: cover;
+      background-position: center;
+    }
+
+    @media screen and (max-width: 670px) {
+      header {
+        min-height: 5px;
+      }
+    }
+
+    .section {
+      padding-top: 4vw;
+      padding-bottom: 4vw;
+    }
+
+    .tabs .indicator {
+      background-color: #1a237e;
+    }
+
+    .tabs .tab a:focus,
+    .tabs .tab a:focus.active {
+      background: transparent;
+    }
+
+    .logo-text {
+      font-family: "Covered By Your Grace", cursive, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="navbar-fixed">
+      <nav class="nav-wrapper indigo">
+        <div class="container">
+          <a href="#" class="brand-logo">
+            <span class="logo-text">No More Cooking</span>
+          </a>
+          <a href="#" class="sidenav-trigger" data-target="mobile-links">
+            <i class="material-icons">menu</i>
+          </a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#map">Search</a></li>
+            <li><a href="#inputDish">Serve</a></li>
+            <li><a href="">Contact</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="" class="btn-small blue indigo-text">Login</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <ul class="sidenav" id="mobile-links">
+      <li><a href="#map">Search</a></li>
+      <li><a href="#inputDish">Serve</a></li>
+      <li><a href="">Contact</a></li>
+      <li><a href="">About</a></li>
+    </ul>
+  </header>
+
+
+
+
+
+  <section class="container  section page" id="inputDish">
+    <div class="row">
+      <div class="col s12 l5 offset-l3">
+        <form class="submitdish" id="submitdish">
+          <div class="input-field">
+            <i class="material-icons prefix">restaurant</i>
+            <input type="text" name="name" id="dishname" required>
+            <label for="dishname">Recipe Name</label>
+          </div>
+          <div class="input-field">
+            <i class="material-icons prefix">schedule</i>
+            <input type="datetime-local" name="willBeAvailableBy" id="willbeavailableby" required>
+            <span class="helper-text" data-error="wrong" data-success="right">Ready to be pick up at</span>
+          </div>
+          <div class="input-field">
+            <i class="material-icons prefix">schedule</i>
+            <input type="datetime-local"  name="orderBefore" id="orderbefore" required>
+            <span class="helper-text" data-error="wrong" data-success="right">Last order before</span>
+
+          </div>
+          <div class="input-field">
+            <i class="material-icons prefix">room_service</i>
+            <input type="number" name="quantity" id="quantity" required>
+            <label for="quantity">Available Quantity</label>
+          </div>
+          <div>
+            <input type="hidden" name="availableQuantity" value="10">
+          </div>
+          <div>
+            <input type="hidden" name="active" value="true">
+          </div>
+          <div class="input-field">
+            <i class="material-icons prefix">local_parking</i>
+            <input type="number" name="price" id="price" required>
+            <label for="price">Price for each</label>
+          </div>
+          <div class="input-field center">
+            <input id="submit" type="submit" name="submit" value="Submit" class="btn-small blue indigo-text">
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+    <div id="map" class="page default"></div>
+
+    <script>
+      var markers = [];
+      var map;
+      var myLatLng;
+      const serialize_form = form => JSON.stringify(
+        Array.from(new FormData(form).entries())
+             .reduce((m, [ key, value ]) => Object.assign(m, { [key]: value }), {})
+      );
+      $(document).ready(function() {
+        getLocation();
+        $('.sidenav').sidenav();
+        $('.modal').modal();
+        $('.tabs').tabs();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+        $("#submitdish").on('submit', function(event){
+          event.preventDefault();
+          const json = serialize_form(this);
+          const objToSend = JSON.parse(json);
+          // objToSend["willBeAvailableBy" ] = "2019-06-29T13:34:00.000";
+          // objToSend["orderBefore"] = "2019-06-29T13:34:00.000";
+          objToSend['geometry'] = {"type":"point","coordinates":[myLatLng.lat,myLatLng.lng]};
+          console.log(JSON.stringify(objToSend));
+          $.ajax({
+              url: '/apis/dishes',
+              type : "POST",
+              contentType: 'application/json',
+              dataType : 'json',
+              data :  JSON.stringify(objToSend),
+              success : function(result) {
+                  console.log(result);
+              },
+              error: function(xhr, textStatus, errtext) {
+                  console.log(xhr, textStatus, errtext);
+              }
+          });
+       });
+      });
+
+      function sendData(){
+        $.ajax({
+            url: 'apis/dishes',
+            type : "POST",
+            dataType : 'json',
+            data :  JSON.stringify(objToSend),
+            success : function(result) {
+                console.log(result);
+            },
+            error: function(xhr, textStatus, errtext) {
+                console.log(xhr, textStatus, errtext);
+            }
+        });
+
+      }
+
+      function getResults() {
+        $.ajax({
+          type: "get",
+          url: '/apis/dishes?lng=28.0766521&lat=-82.5646951',
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(data) {
+
+            for (var i = 0; i < data.length; i++) {
+              console.log(data[i].geometry.coordinates[0]);
+              console.log(data[i].geometry.coordinates[1]);
+              addMarkerWithTimeout(data[i], i * 200);
+            }
+          }
+        })
+      }
+
+      function addMarkerWithTimeout(data, timeout) {
+        window.setTimeout(function() {
+          markers.push(new google.maps.Marker({
+            position: {
+              lat: data.geometry.coordinates[0],
+              lng: data.geometry.coordinates[1]
+            },
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: data.name
+          }));
+        }, timeout);
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(centerAroundCurrentLoc, centerAroundDefaultLoc);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function centerAroundCurrentLoc(position) {
+        myLatLng = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        loadMap(myLatLng);
+        getResults();
+      }
+
+      function centerAroundDefaultLoc() {
+        var defaultLatLng = {
+          lat: 28.0766521,
+          lng: -82.5646951
+        };
+        loadMap(myLatLng);
+        getResults();
+      }
+
+      function loadMap(myLatLng) {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'I need food'
+        });
+      }
+      function submitRecipe(e) {
+        e.preventDefault();
+         console.log('hhhhhhh')
+         $.post('/apis/dishes', $(this).serialize(), function(data){
+             $('#response').html(data);
+         }).fail(function() {
+             alert( "Posting failed." );
+         });
+         return false;
+
+      }
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {
+            lat: 28.0766521,
+            lng: -82.5646951
+          }
+        });
+      }
+    </script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrsYcIpbD1g5lujyD8Jkz9mxV2CJIwjCk&callback=initMap" async defer></script>
+</body>
+
+</html>

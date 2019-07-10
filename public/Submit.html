@@ -1,0 +1,179 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <title>No More Cooking</title>
+  <style>
+    header{
+      background-size: cover;
+      background-position: center;
+      min-height: 1000px;
+    }
+    @media screen and (max-width: 670px){
+      header{
+        min-height: 500px;
+      }
+    }
+    .section{
+      padding-top: 4vw;
+      padding-bottom: 4vw;
+    }
+    .tabs .indicator{
+      background-color: #1a237e;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active{
+      background: transparent;
+    }
+    .logo-text{
+      font-family: "Covered By Your Grace", cursive, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    }
+    #map {
+     height: 100%;
+    }
+  </style>
+</head>
+<body>
+ <header>
+  <div class="navbar-fixed">
+    <nav class="nav-wrapper indigo">
+      <div class="container">
+        <a href="#" class="brand-logo">
+          <span class="logo-text">No More Cooking</span>
+        </a>
+        <a href="#" class="sidenav-trigger" data-target="mobile-links">
+          <i class="material-icons">menu</i>
+        </a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="">Home</a></li>
+          <li><a href="">About</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="" class="btn-small blue indigo-text">Login</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+
+  <section class="section container" id="services">
+     <div class="row">
+       <div class="col">
+         <ul class="tabs">
+           <li class="tab col s6 l6">
+             <a href="#hungry" class="active indigo-text text-darken-4">Hungry ?</a>
+           </li>
+           <li class="tab col s6 l6">
+             <a href="#cook" class="indigo-text text-darken-4">Cook ?</a>
+           </li>
+         </ul>
+       </div>
+     </div>
+     <div id="hungry" class="col s12">
+         <div class="" id="map"></div>
+     </div>
+     <div id="cook" class="col s12">
+
+         <!-- input form -->
+         <section class="section" id="inputDish">
+           <div class="row">
+             <div class="col s12 l5 offset-l2">
+               <form class="submitdish" name="submitdish" onsubmit="submitRecipe()">
+                 <div class="input-field">
+                   <i class="material-icons prefix" >restaurant</i>
+                   <input type="text" name="name" id="dishname" required>
+                   <label for="dishname">Dish Name</label>
+                 </div>
+                 <div class="input-field">
+                   <i class="material-icons prefix">schedule</i>
+                   <input type="text" class="timepicker" name="willBeAvailableBy" id="willbeavailableby" required>
+                   <label for="willbeavailableby">Will be available by</label>
+                 </div>
+                 <div class="input-field">
+                   <i class="material-icons prefix">schedule</i>
+                   <input type="datetime" class="timepicker" name="orderBefore" id="orderbefore" required>
+                   <label for="orderbefore">Order before</label>
+                 </div>
+                 <div class="input-field">
+                   <i class="material-icons prefix">room_service</i>
+                   <input type="number" name="quantity" id="quantity" required>
+                   <label for="quantity">Quantity</label>
+                 </div>
+                 <div>
+                   <input type="hidden" name="availableQuantity" value="10">
+                 </div>
+                 <div>
+                   <input type="hidden" name="active" value="true">
+                 </div>
+                 <div class="input-field">
+                   <i class="material-icons prefix">local_parking</i>
+                   <input type="number" name="price" id="price" required>
+                   <label for="price">Price</label>
+                 </div>
+                 <div class="input-field center">
+                  <input type="submit" value="Submit" class="btn-small blue indigo-text">
+                </div>
+               </form>
+             </div>
+           </div>
+         </section>
+
+     </div>
+  </section>
+
+  <ul class="sidenav" id="mobile-links">
+    <li><a href="">Home</a></li>
+    <li><a href="">About</a></li>
+    <li><a href="">Contact</a></li>
+  </ul>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+      $('.modal').modal();
+      $('.tabs').tabs();
+      $('.datepicker').datepicker();
+      $('.timepicker').timepicker();
+    });
+
+     var map;
+     function initMap() {
+       map = new google.maps.Map(document.getElementById('map'), {
+         center: {lat: -34.397, lng: 150.644},
+         zoom: 8
+       });
+     }
+  </script>
+    <script>
+     function submitRecipe(e) {
+       e.preventDefault();
+
+        // show that something is loading
+        console.log('hhhhhhh')
+        $('#response').html("<b>Loading response...</b>");
+        $.post('/apis/dishes', $(this).serialize(), function(data){
+            // show the response
+            $('#response').html(data);
+        }).fail(function() {
+            // just in case posting your form failed
+            alert( "Posting failed." );
+        });
+        // to prevent refreshing the whole page page
+        return false;
+
+     }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrsYcIpbD1g5lujyD8Jkz9mxV2CJIwjCk&callback=initMap"
+    async defer></script>
+ <header>
+</body>
+</html>

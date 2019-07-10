@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ninjago</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+
+        <h1 class="title">Ninjago - a Ninja REST API</h1>
+        <div id="homepage">
+            <h1>Hire a ninja in your area!</h1>
+            <div id="ninjas"></div>
+        </div>
+
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <script src="https://unpkg.com/react@15/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+        <script type="text/babel">
+
+          class IloveCooking extends React.Component {
+          // var Ninjas = React.createClass({
+
+          constructor() {
+            super();
+            this.state = {
+              dishes: [],
+              formControls: {
+                      lng: {
+                        value: ''
+                      },
+                      lat: {
+                        value: ''
+                      },
+                  }
+            };
+            this.handleSubmit = this.handleSubmit.bind(this);
+            this.changeHandler = this.changeHandler.bind(this);
+          }
+          handleSubmit(e){
+              e.preventDefault();
+              var lng = this.state.formControls.lat.value;
+              var lat = this.state.formControls.lng.value;
+              console.log(lng,lat);
+              // fetch('/apis/dishes?lng=' + lng+ '&lat=' + lat)
+              //   .then(response => response.json())
+              //   .then(data => this.setState({ dishes: data }))
+              //   .catch(error => console.log(error));
+
+                fetch('/apis/dishes?lng=' + lng + '&lat=' + lat).then(function(data){
+                  console.log(data);
+                                return data.json();
+                            }).then( json => {
+                                this.setState({
+                                    dishes: json
+                                });
+                                console.log(json);
+                            });
+          }
+
+          changeHandler = event => {
+
+            const name = event.target.name;
+            const value = event.target.value;
+
+            this.setState({
+              formControls: {
+                  ...this.state.formControls,
+                  [name]: {
+                  ...this.state.formControls[name],
+                  value
+                }
+              }
+            });
+          }
+
+
+
+             render(){
+                 var dishes = this.state.dishes;
+                 dishes = dishes.map(function(dish, index){
+                     return(
+                         <li key={index}>
+                             <span className="name">{dish.name}</span>
+                             <span className="rank">{dish.quantity}</span>
+                             <span className="dist">{Math.floor(dish.dis / 1000)} km</span>
+                         </li>
+                     );
+                 });
+                 return(
+                     <div id="dish-container">
+                         <form id="search" onSubmit={this.handleSubmit}>
+                             <label>Enter your Latitude:</label>
+                             <input type="text"
+                              name="lat"
+                              value={this.state.formControls.lat.value}
+                              placeholder="latitude"
+                              required
+                              onChange={this.changeHandler} />
+                             <label>Enter your Longitude:</label>
+                             <input type="text"
+                              name="lng"
+                              value={this.state.formControls.lng.value}
+                              placeholder="longitude"
+                              required
+                              onChange={this.changeHandler} />
+                             <input type="submit" value="Search Food" />
+                         </form>
+                         <ul>{dishes}</ul>
+                     </div>
+                 );
+             }
+
+          }
+
+  ReactDOM.render(
+  <IloveCooking />,
+  document.getElementById('ninjas')
+);
+
+        </script>
+
+      </body>
+   </html>
